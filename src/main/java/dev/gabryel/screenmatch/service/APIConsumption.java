@@ -1,22 +1,15 @@
 package dev.gabryel.screenmatch.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-@Service
+
 public class APIConsumption {
 
-    @Value("${api.key}")
-    private String apiKey;
-
-    public String fetchData(String searchName) {
-        String address = "http://www.omdbapi.com/?t=" + searchName.replace(" ", "+") + '&' + "apikey=" + apiKey;
+    public String fetchData(String address) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(address))
