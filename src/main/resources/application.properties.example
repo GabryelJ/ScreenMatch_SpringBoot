@@ -1,1 +1,2 @@
 spring.application.name=screenmatch
+api.key=YOUR_API_KEY
