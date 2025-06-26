@@ -1,7 +1,8 @@
 package dev.gabryel.screenmatch;
 
+import dev.gabryel.screenmatch.model.SerieData;
 import dev.gabryel.screenmatch.service.APIConsumption;
-import org.springframework.beans.factory.annotation.Autowired;
+import dev.gabryel.screenmatch.service.DataParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,7 +24,8 @@ public class ScreenmatchApplication implements CommandLineRunner {
 		String address = "http://www.omdbapi.com/?t=" + mediaName.replace(" ", "+") + '&' + "apikey=" + apiKey;
 		var json = apiConsumption.fetchData(address);
 		System.out.println(json);
-		json = apiConsumption.fetchData("https://coffee.alexflipnote.dev/random.json");
-		System.out.println(json);
+		DataParser dataParser = new DataParser();
+		SerieData data = dataParser.fetchData(json, SerieData.class);
+		System.out.println(data);
 	}
 }
