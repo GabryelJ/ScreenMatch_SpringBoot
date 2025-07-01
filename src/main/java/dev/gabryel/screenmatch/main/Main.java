@@ -46,18 +46,6 @@ public class Main {
                 .forEach(episode -> System.out.println(episode.title())));
 
 
-        List<EpisodeData> episodesData = seasons.stream()
-                .flatMap(season -> season.episodes().stream())
-                .collect(Collectors.toList());
-
-
-        System.out.println("Top 5 episódios: ");
-        episodesData.stream()
-                .filter(episodeData -> !Objects.equals(episodeData.rating(), "N/A"))
-                .sorted(Comparator.comparing(EpisodeData::rating).reversed())
-                .limit(5)
-                .forEach(System.out::println);
-
         List<Episode> episodes = seasons.stream()
                 .flatMap(season -> season.episodes().stream()
                         .map(episodeData -> new Episode(season.number(), episodeData))
