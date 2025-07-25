@@ -29,14 +29,14 @@ public class Main {
         System.out.println("Digite o nome da serie: ");
         var serieName = input.nextLine();
         var json = apiConsumption.fetchData(ADDRESS + serieName.replace(' ', '+')+ "&apikey=" + API_KEY);
-        SerieData data = dataParser.fetchData(json, SerieData.class);
+        SerieData data = dataParser.getData(json, SerieData.class);
         System.out.println(data);
 
         List<SeasonData> seasons = new ArrayList<>();
 
         for (int i = 1; i < data.totalSeasons(); i++){
             json = apiConsumption.fetchData("http://www.omdbapi.com/?t=" + serieName.replace(" ", "+") + '&' + "season=" + i + '&' + "apikey=" + API_KEY);
-            SeasonData seasonData = dataParser.fetchData(json, SeasonData.class);
+            SeasonData seasonData = dataParser.getData(json, SeasonData.class);
             seasons.add(seasonData);
         }
 

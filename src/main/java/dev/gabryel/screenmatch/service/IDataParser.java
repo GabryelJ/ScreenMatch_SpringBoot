@@ -1,5 +1,5 @@
 package dev.gabryel.screenmatch.service;
 
 public interface IDataParser {
-    <T> T fetchData (String json, Class<T> tClass);
+    <T> T getData (String json, Class<T> tClass);
 }
