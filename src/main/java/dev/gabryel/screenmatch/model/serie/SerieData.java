@@ -1,4 +1,4 @@
-package dev.gabryel.screenmatch.model;
+package dev.gabryel.screenmatch.model.serie;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

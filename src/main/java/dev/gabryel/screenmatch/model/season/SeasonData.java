@@ -1,7 +1,8 @@
-package dev.gabryel.screenmatch.model;
+package dev.gabryel.screenmatch.model.season;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import dev.gabryel.screenmatch.model.episode.EpisodeData;
 
 import java.util.List;
 

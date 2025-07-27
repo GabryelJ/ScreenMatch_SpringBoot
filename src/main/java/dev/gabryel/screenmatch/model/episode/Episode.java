@@ -1,6 +1,5 @@
-package dev.gabryel.screenmatch.model;
+package dev.gabryel.screenmatch.model.episode;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 

@@ -1,13 +1,16 @@
 package dev.gabryel.screenmatch.main;
 
-import dev.gabryel.screenmatch.model.SeasonData;
-import dev.gabryel.screenmatch.model.SerieData;
+import dev.gabryel.screenmatch.model.season.SeasonData;
+import dev.gabryel.screenmatch.model.serie.Serie;
+import dev.gabryel.screenmatch.model.serie.SerieData;
 import dev.gabryel.screenmatch.service.APIConsumption;
 import dev.gabryel.screenmatch.service.dataparser.DataParser;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -83,7 +86,14 @@ public class Main {
     }
 
     private void showSearchedSeries(){
+        List<Serie> series = new ArrayList<>();
+        series = seriesDatas.stream()
+                .map(serieData -> new Serie(serieData))
+                        .collect(Collectors.toList());
+
         System.out.println("\nSeries buscadas: ");
-        seriesDatas.forEach(System.out::println);
+        series.stream()
+                .sorted(Comparator.comparing(Serie::getGenre))
+                .forEach(System.out::println);
     }
 }
