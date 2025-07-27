@@ -13,7 +13,7 @@ public class ScreenmatchApplication implements CommandLineRunner {
 	private String apiKey;
 
 	public static void main(String[] args) {
-		SpringApplication.run(ScreenmatchApplication.class, args);
+			SpringApplication.run(ScreenmatchApplication.class, args);
 	}
 
 	@Override
