@@ -5,6 +5,7 @@ import dev.gabryel.screenmatch.model.serie.Serie;
 import dev.gabryel.screenmatch.model.serie.SerieData;
 import dev.gabryel.screenmatch.service.APIConsumption;
 import dev.gabryel.screenmatch.service.GeminiService;
+import dev.gabryel.screenmatch.service.PlotTranslator;
 import dev.gabryel.screenmatch.service.dataparser.DataParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,21 +19,20 @@ import java.util.stream.Collectors;
 
 @Component
 public class Main {
-
     private final String ADDRESS = "http://www.omdbapi.com/?t=";
     private final String API_KEY;
 
     private final Scanner input = new Scanner(System.in);
     private final APIConsumption apiConsumption;
     private final DataParser dataParser;
-    private final GeminiService geminiService;
+    private final PlotTranslator plotTranslator;
 
-    private List<SerieData> seriesDatas = new ArrayList<>();
+    private List<Serie> series = new ArrayList<>();
 
     @Autowired
-    public Main(@Value("${omdb.api.key}") String apiKey, GeminiService geminiService, APIConsumption apiConsumption, DataParser dataParser) {
+    public Main(@Value("${omdb.api.key}") String apiKey, PlotTranslator plotTranslator, APIConsumption apiConsumption, DataParser dataParser) {
         this.API_KEY = apiKey;
-        this.geminiService = geminiService;
+        this.plotTranslator = plotTranslator;
         this.apiConsumption = apiConsumption;
         this.dataParser = dataParser;
     }
@@ -72,7 +72,9 @@ public class Main {
 
     private void searchWebSerie() {
         SerieData data = getSerieData();
-        seriesDatas.add(data);
+        Serie serie = new Serie(data);
+        serie.setPlot(plotTranslator.translate(serie.getPlot()));
+        series.add(serie);
         System.out.println(data);
     }
 
@@ -97,15 +99,6 @@ public class Main {
     }
 
     private void showSearchedSeries(){
-        List<Serie> series = new ArrayList<>();
-        series = seriesDatas.stream()
-                .map(serieData -> new Serie(serieData))
-                .map(serie -> {
-                    serie.setPlot(geminiService.getTranslation(serie.getPlot()));
-                    return serie;
-                })
-                .collect(Collectors.toList());
-
         System.out.println("\nSeries buscadas: ");
         series.stream()
                 .sorted(Comparator.comparing(Serie::getGenre))
