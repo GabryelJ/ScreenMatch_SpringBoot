@@ -4,7 +4,11 @@ import dev.gabryel.screenmatch.model.season.SeasonData;
 import dev.gabryel.screenmatch.model.serie.Serie;
 import dev.gabryel.screenmatch.model.serie.SerieData;
 import dev.gabryel.screenmatch.service.APIConsumption;
+import dev.gabryel.screenmatch.service.GeminiService;
 import dev.gabryel.screenmatch.service.dataparser.DataParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,18 +16,25 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+@Component
 public class Main {
 
     private final String ADDRESS = "http://www.omdbapi.com/?t=";
     private final String API_KEY;
 
-    private Scanner input = new Scanner(System.in);
-    private APIConsumption apiConsumption = new APIConsumption();
-    private DataParser dataParser = new DataParser();
+    private final Scanner input = new Scanner(System.in);
+    private final APIConsumption apiConsumption;
+    private final DataParser dataParser;
+    private final GeminiService geminiService;
+
     private List<SerieData> seriesDatas = new ArrayList<>();
 
-    public Main(String apiKey) {
+    @Autowired
+    public Main(@Value("${omdb.api.key}") String apiKey, GeminiService geminiService, APIConsumption apiConsumption, DataParser dataParser) {
         this.API_KEY = apiKey;
+        this.geminiService = geminiService;
+        this.apiConsumption = apiConsumption;
+        this.dataParser = dataParser;
     }
 
     public void showMenu() {
@@ -89,7 +100,11 @@ public class Main {
         List<Serie> series = new ArrayList<>();
         series = seriesDatas.stream()
                 .map(serieData -> new Serie(serieData))
-                        .collect(Collectors.toList());
+                .map(serie -> {
+                    serie.setPlot(geminiService.getTranslation(serie.getPlot()));
+                    return serie;
+                })
+                .collect(Collectors.toList());
 
         System.out.println("\nSeries buscadas: ");
         series.stream()

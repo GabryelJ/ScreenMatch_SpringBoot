@@ -5,6 +5,7 @@ import dev.gabryel.screenmatch.model.Category;
 import java.util.OptionalDouble;
 
 public class Serie {
+
     private String title;
     private Integer totalSeasons;
     private Double rating;
