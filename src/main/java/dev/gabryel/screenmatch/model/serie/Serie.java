@@ -1,14 +1,20 @@
 package dev.gabryel.screenmatch.model.serie;
 
 import dev.gabryel.screenmatch.model.Category;
+import jakarta.persistence.*;
 
 import java.util.OptionalDouble;
 
+@Entity(name="series")
 public class Serie {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(unique = true)
     private String title;
     private Integer totalSeasons;
     private Double rating;
+    @Enumerated(EnumType.STRING)
     private Category genre;
     private String poster;
     private String actors;
@@ -22,6 +28,14 @@ public class Serie {
         this.poster = serieData.poster();
         this.actors = serieData.actors();
         this.plot = serieData.plot();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {
