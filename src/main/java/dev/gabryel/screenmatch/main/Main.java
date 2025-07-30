@@ -3,11 +3,10 @@ package dev.gabryel.screenmatch.main;
 import dev.gabryel.screenmatch.model.season.SeasonData;
 import dev.gabryel.screenmatch.model.serie.Serie;
 import dev.gabryel.screenmatch.model.serie.SerieData;
+import dev.gabryel.screenmatch.repository.SerieRepository;
 import dev.gabryel.screenmatch.service.APIConsumption;
-import dev.gabryel.screenmatch.service.GeminiService;
 import dev.gabryel.screenmatch.service.PlotTranslator;
 import dev.gabryel.screenmatch.service.dataparser.DataParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 @Component
 public class Main {
@@ -26,15 +24,14 @@ public class Main {
     private final APIConsumption apiConsumption;
     private final DataParser dataParser;
     private final PlotTranslator plotTranslator;
+    private final SerieRepository serieRepository;
 
-    private List<Serie> series = new ArrayList<>();
-
-    @Autowired
-    public Main(@Value("${omdb.api.key}") String apiKey, PlotTranslator plotTranslator, APIConsumption apiConsumption, DataParser dataParser) {
+    public Main(@Value("${omdb.api.key}") String apiKey, PlotTranslator plotTranslator, APIConsumption apiConsumption, DataParser dataParser, SerieRepository serieRepository) {
         this.API_KEY = apiKey;
         this.plotTranslator = plotTranslator;
         this.apiConsumption = apiConsumption;
         this.dataParser = dataParser;
+        this.serieRepository = serieRepository;
     }
 
     public void showMenu() {
@@ -74,8 +71,8 @@ public class Main {
         SerieData data = getSerieData();
         Serie serie = new Serie(data);
         serie.setPlot(plotTranslator.translate(serie.getPlot()));
-        series.add(serie);
-        System.out.println(data);
+        serieRepository.save(serie);
+        System.out.println(serie);
     }
 
     private SerieData getSerieData() {
@@ -100,6 +97,7 @@ public class Main {
 
     private void showSearchedSeries(){
         System.out.println("\nSeries buscadas: ");
+        List<Serie> series = serieRepository.findAll();
         series.stream()
                 .sorted(Comparator.comparing(Serie::getGenre))
                 .forEach(System.out::println);

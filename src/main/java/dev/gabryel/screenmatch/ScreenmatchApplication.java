@@ -1,7 +1,7 @@
 package dev.gabryel.screenmatch;
 
 import dev.gabryel.screenmatch.main.Main;
-import org.springframework.beans.factory.annotation.Autowired;
+import dev.gabryel.screenmatch.repository.SerieRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,10 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ScreenmatchApplication implements CommandLineRunner {
 	private final Main main;
+	private final SerieRepository serieRepository;
 
-	@Autowired
-	public ScreenmatchApplication(Main main) {
+
+	public ScreenmatchApplication(Main main, SerieRepository serieRepository) {
 		this.main = main;
+		this.serieRepository = serieRepository;
 	}
 
 	public static void main(String[] args) {

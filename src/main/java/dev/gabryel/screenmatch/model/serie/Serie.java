@@ -1,8 +1,11 @@
 package dev.gabryel.screenmatch.model.serie;
 
 import dev.gabryel.screenmatch.model.Category;
+import dev.gabryel.screenmatch.model.episode.Episode;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalDouble;
 
 @Entity(name="series")
@@ -19,6 +22,11 @@ public class Serie {
     private String poster;
     private String actors;
     private String plot;
+    @Transient
+    private List<Episode> episodes = new ArrayList<>();
+
+    public Serie() {
+    }
 
     public Serie(SerieData serieData){
         this.title = serieData.title();
@@ -92,6 +100,14 @@ public class Serie {
 
     public void setPlot(String plot) {
         this.plot = plot;
+    }
+
+    public List<Episode> getEpisodes() {
+        return episodes;
+    }
+
+    public void setEpisodes(List<Episode> episodes) {
+        this.episodes = episodes;
     }
 
     @Override
