@@ -1,14 +1,29 @@
 package dev.gabryel.screenmatch.model.episode;
 
+import dev.gabryel.screenmatch.model.serie.Serie;
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+@Entity
+@Table(name="episodios")
 public class Episode {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private Integer season;
     private String title;
     private Integer number;
     private Double rating;
     private LocalDate releaseDate;
+
+    @ManyToOne
+    private Serie serie;
+
+    public Episode() {
+    }
 
     public Episode(Integer seasonNumber, EpisodeData episodeData) {
         this.season = seasonNumber;
@@ -24,6 +39,22 @@ public class Episode {
         }catch (DateTimeParseException exception){
             this.releaseDate = null;
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Serie getSerie() {
+        return serie;
+    }
+
+    public void setSerie(Serie serie) {
+        this.serie = serie;
     }
 
     public LocalDate getReleaseDate() {

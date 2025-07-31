@@ -8,21 +8,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
 
-@Entity(name="series")
+@Entity
+@Table(name="series")
 public class Serie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
     @Column(unique = true)
     private String title;
+
     private Integer totalSeasons;
     private Double rating;
+
     @Enumerated(EnumType.STRING)
     private Category genre;
+
     private String poster;
     private String actors;
     private String plot;
-    @Transient
+
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Episode> episodes = new ArrayList<>();
 
     public Serie() {
@@ -107,6 +113,7 @@ public class Serie {
     }
 
     public void setEpisodes(List<Episode> episodes) {
+        episodes.forEach(episode -> episode.setSerie(this));
         this.episodes = episodes;
     }
 
@@ -118,6 +125,7 @@ public class Serie {
                 ", Classificação=" + rating +
                 ", Poster='" + poster + '\'' +
                 ", Atores='" + actors + '\'' +
-                ", Sinopse='" + plot + '\'';
+                ", Sinopse='" + plot + '\''+
+                ", Episodios='" + episodes + '\'';
     }
 }
