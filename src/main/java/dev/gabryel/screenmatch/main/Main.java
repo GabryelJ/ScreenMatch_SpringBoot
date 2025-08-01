@@ -39,13 +39,14 @@ public class Main {
         var option = -1;
         var menu = """
                 \n
-                1 - Buscar séries
-                2 - Buscar episódios
-                3 - Listar séries buscada
-                4 - Buscar série por titulo
-                5 - Buscar série por ator
+                1 - Buscar séries;
+                2 - Buscar episódios;
+                3 - Listar séries buscada;
+                4 - Buscar série por titulo;
+                5 - Buscar série por ator;
+                6 - Buscar top 5 séries;
                 
-                0 - Sair                                 
+                0 - Sair.
                 """;
         while(option != 0){
             System.out.println(menu);
@@ -67,6 +68,9 @@ public class Main {
                     break;
                 case 5:
                     searchSerieByActor();
+                    break;
+                case 6:
+                    searchTop5Series();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -94,7 +98,6 @@ public class Main {
     }
 
     private void searchEpisodeForSerie(){
-//        SerieData serieData = getSerieData();
         showSearchedSeries();
         System.out.println("Escolha uma série pelo nome: ");
         var serieName = input.nextLine();
@@ -155,5 +158,10 @@ public class Main {
         foundSeries.forEach(serie -> System.out.println(serie.getTitle() + "Avaliação : " + serie.getRating()));
     }
 
+    private void searchTop5Series() {
+        List<Serie> topSeries = serieRepository.findTop5SerieOrderByRatingDesc();
+        topSeries.forEach(serie -> System.out.println(serie.getTitle() + "Avaliação : " + serie.getRating()));
+
+    }
 
 }
