@@ -149,7 +149,7 @@ public class Main {
         System.out.println("Qual o nome do ator que deseja buscar?");
         var actorName = input.nextLine();
         System.out.println("A partir de qual nota deseja obter os resultados?");
-        Double rating = input.nextLine();
+        Double rating = input.nextDouble();
         List<Serie> foundSeries = serieRepository.findByActorsContainingIgnoreCaseAndRatingGreaterThanEqual(actorName, rating);
         System.out.println("Séries em que " + actorName + " atuou: ");
         foundSeries.forEach(serie -> System.out.println(serie.getTitle() + "Avaliação : " + serie.getRating()));
