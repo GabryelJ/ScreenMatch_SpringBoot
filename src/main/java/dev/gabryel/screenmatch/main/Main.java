@@ -1,5 +1,6 @@
 package dev.gabryel.screenmatch.main;
 
+import dev.gabryel.screenmatch.model.Category;
 import dev.gabryel.screenmatch.model.episode.Episode;
 import dev.gabryel.screenmatch.model.season.SeasonData;
 import dev.gabryel.screenmatch.model.serie.Serie;
@@ -45,6 +46,7 @@ public class Main {
                 4 - Buscar série por titulo;
                 5 - Buscar série por ator;
                 6 - Buscar top 5 séries;
+                7 - Buscar séries por genero;
                 
                 0 - Sair.
                 """;
@@ -72,6 +74,11 @@ public class Main {
                 case 6:
                     searchTop5Series();
                     break;
+                case 7:
+                    searchByCategory();
+                    break;
+                case 8:
+                    searchByTotalSeasonsAndRating();
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -161,7 +168,28 @@ public class Main {
     private void searchTop5Series() {
         List<Serie> topSeries = serieRepository.findTop5SerieOrderByRatingDesc();
         topSeries.forEach(serie -> System.out.println(serie.getTitle() + "Avaliação : " + serie.getRating()));
-
     }
 
+    private void searchByCategory() {
+        System.out.println("Qual o genero de série desejado?");
+        var genreName = input.nextLine();
+        Category category = Category.fromPortuguese(genreName);
+        List<Serie> seriesByGenre = serieRepository.findByGenero(category);
+        System.out.println("Séries da categoria" + genreName);
+        seriesByGenre
+                .forEach(serie -> System.out.println(serie.getTitle() + "Avaliação : " + serie.getRating()));
+    }
+
+    private void searchByTotalSeasonsAndRating() {
+        System.out.println("Filtrar séries até quantas temporadas? ");
+        var totalSeasons = input.nextInt();
+        input.nextLine();
+        System.out.println("Com avaliação a partir de que valor? ");
+        var rating = input.nextDouble();
+        input.nextLine();   
+        List<Serie> filteredSeries = serieRepository.findByTotalSeasonsLessThanEqualAndRatingGreaterThanEqual(totalSeasons, rating);
+        System.out.println("*** Séries filtradas ***");
+        filteredSeries.forEach(serie ->
+                System.out.println(serie.getTitle() + "  - avaliação: " + serie.getRating()));
+    }
 }

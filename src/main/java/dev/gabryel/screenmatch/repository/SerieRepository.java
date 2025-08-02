@@ -1,5 +1,6 @@
 package dev.gabryel.screenmatch.repository;
 
+import dev.gabryel.screenmatch.model.Category;
 import dev.gabryel.screenmatch.model.serie.Serie;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +13,8 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
     List<Serie> findByActorsContainingIgnoreCaseAndRatingGreaterThanEqual(String actorName, Double rating);
 
     List<Serie> findTop5SerieOrderByRatingDesc();
+
+    List<Serie> findByGenero(Category category);
+
+    List<Serie> findByTotalSeasonsLessThanEqualAndRatingGreaterThanEqual(int totalSeasons, double rating);
 }
