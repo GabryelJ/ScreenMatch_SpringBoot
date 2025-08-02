@@ -47,7 +47,7 @@ public class Main {
                 5 - Buscar série por ator;
                 6 - Buscar top 5 séries;
                 7 - Buscar séries por genero;
-                
+                8 - Filtrar séries.
                 0 - Sair.
                 """;
         while(option != 0){
@@ -79,6 +79,7 @@ public class Main {
                     break;
                 case 8:
                     searchByTotalSeasonsAndRating();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -166,7 +167,7 @@ public class Main {
     }
 
     private void searchTop5Series() {
-        List<Serie> topSeries = serieRepository.findTop5SerieOrderByRatingDesc();
+        List<Serie> topSeries = serieRepository.findTop5ByOrderByRatingDesc();
         topSeries.forEach(serie -> System.out.println(serie.getTitle() + "Avaliação : " + serie.getRating()));
     }
 
@@ -174,7 +175,7 @@ public class Main {
         System.out.println("Qual o genero de série desejado?");
         var genreName = input.nextLine();
         Category category = Category.fromPortuguese(genreName);
-        List<Serie> seriesByGenre = serieRepository.findByGenero(category);
+        List<Serie> seriesByGenre = serieRepository.findByGenre(category);
         System.out.println("Séries da categoria" + genreName);
         seriesByGenre
                 .forEach(serie -> System.out.println(serie.getTitle() + "Avaliação : " + serie.getRating()));
@@ -187,7 +188,7 @@ public class Main {
         System.out.println("Com avaliação a partir de que valor? ");
         var rating = input.nextDouble();
         input.nextLine();   
-        List<Serie> filteredSeries = serieRepository.findByTotalSeasonsLessThanEqualAndRatingGreaterThanEqual(totalSeasons, rating);
+        List<Serie> filteredSeries = serieRepository.serieBySeasonAndRating(totalSeasons, rating);
         System.out.println("*** Séries filtradas ***");
         filteredSeries.forEach(serie ->
                 System.out.println(serie.getTitle() + "  - avaliação: " + serie.getRating()));
