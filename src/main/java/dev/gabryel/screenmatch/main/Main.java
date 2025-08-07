@@ -191,9 +191,9 @@ public class Main {
         var genreName = input.nextLine();
         Category category = Category.fromPortuguese(genreName);
         List<Serie> seriesByGenre = serieRepository.findByGenre(category);
-        System.out.println("Séries da categoria" + genreName);
+        System.out.println("Séries da categoria " + genreName);
         seriesByGenre
-                .forEach(serie -> System.out.println(serie.getTitle() + "Avaliação : " + serie.getRating()));
+                .forEach(serie -> System.out.println(serie.getTitle() + " Avaliação : " + serie.getRating()));
     }
 
     private void searchSerieByTotalSeasonsAndRating() {

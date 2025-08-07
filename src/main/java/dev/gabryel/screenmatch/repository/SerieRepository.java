@@ -21,24 +21,24 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
     List<Serie> findByTotalSeasonsLessThanEqualAndRatingGreaterThanEqual(int totalSeasons, double rating);
 
     @Query(
-            "SELECT s FROM Serie s\n" +
-            "\tWHERE s.totalSeasons <= :totalSeasons AND s.rating >= :rating"
+            "SELECT s FROM Serie s " +
+            "WHERE s.totalSeasons <= :totalSeasons AND s.rating >= :rating "
     )
     List<Serie> serieBySeasonAndRating(int totalSeasons, double rating);
 
-    @Query("SELECT ep FROM Serie s\n" +
-            "\tJOIN s.episodes ep" +
+    @Query("SELECT ep FROM Serie s " +
+            "JOIN s.episodes ep " +
             "WHERE ep.title ILIKE %:namePart% ")
     List<Episode> episodeNameContaining(String namePart);
 
-    @Query("SELECT ep FROM Serie s\n +" +
-            "\tJOIN s.episodes ep" +
-            "WHERE s = :serie ORDER BY ep.rating DESC LIMIT 5")
+    @Query("SELECT ep FROM Serie s " +
+            "JOIN s.episodes ep " +
+            "WHERE s = :serie ORDER BY ep.rating DESC LIMIT 5 ")
     List<Episode> topEpisodesBySerie(Serie serie);
 
 
-    @Query("SELECT ep FROM Serie s" +
-            "\tJOIN s.episodes ep" +
-            "WHERE s = :serie AND YEAR(ep.releaseYear) >= :releaseYear")
+    @Query("SELECT ep FROM Serie s " +
+            "JOIN s.episodes ep " +
+            "WHERE s = :serie AND YEAR(ep.releaseDate) >= :releaseDate ")
     List<Episode> episodesBySerieAndYear(Serie searchSerie, int releaseYear);
 }
