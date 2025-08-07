@@ -4,11 +4,11 @@ import dev.gabryel.screenmatch.model.Category;
 
 public record SerieDTO(
         Long id,
-        String title,
-        Integer totalSeasons,
-        Double rating,
-        Category genre,
+        String titulo,
+        Integer temporadas,
+        Double avaliacao,
+        Category genero,
         String poster,
-        String actors,
-        String plot) {
+        String atores,
+        String sinopse) {
 }
