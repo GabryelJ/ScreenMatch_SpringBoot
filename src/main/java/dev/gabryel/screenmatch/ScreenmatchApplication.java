@@ -7,22 +7,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ScreenmatchApplication implements CommandLineRunner {
-	private final Main main;
-	private final SerieRepository serieRepository;
+public class ScreenmatchApplication{
 
-
-	public ScreenmatchApplication(Main main, SerieRepository serieRepository) {
-		this.main = main;
-		this.serieRepository = serieRepository;
+	public ScreenmatchApplication(Main main) {
 	}
 
 	public static void main(String[] args) {
 			SpringApplication.run(ScreenmatchApplication.class, args);
-	}
-
-	@Override
-	public void run(String... args) throws Exception {
-		main.showMenu();
 	}
 }
